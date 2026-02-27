@@ -23,7 +23,7 @@ provider "fabric" {}
 # Workspaces
 # ──────────────────────────────────────────────
 
-resource "fabric_workspace" "fabric_blueprint" {
+resource "fabric_workspace" "fabric_bi_end2end" {
   display_name = var.workspace_name
   capacity_id  = var.capacity_id
 }
@@ -32,8 +32,8 @@ resource "fabric_workspace" "fabric_blueprint" {
 # Entra Admin Group → Admin on each workspace
 # ──────────────────────────────────────────────
 
-resource "fabric_workspace_role_assignment" "fabric_blueprint_admin_group" {
-  workspace_id = fabric_workspace.fabric_blueprint.id
+resource "fabric_workspace_role_assignment" "fabric_bi_end2end_admin_group" {
+  workspace_id = fabric_workspace.fabric_bi_end2end.id
   principal = {
     id   = var.entra_admin_group_object_id
     type = "Group"

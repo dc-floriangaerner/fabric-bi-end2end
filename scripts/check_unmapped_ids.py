@@ -10,7 +10,7 @@ Scanned contexts:
     - # META  "default_lakehouse_sql_endpoint": "GUID"
     - # META containing known_lakehouses GUID references
   JSON item content files (e.g. copyjob-content.json, pipeline-content.json)
-    - "workspaceId", "artifactId", "lakehouseId", "connectionId" field values
+    - "workspaceId", "artifactId", "itemId", "lakehouseId", "connectionId" field values
 
 Usage:
     python -m scripts.check_unmapped_ids --workspaces_directory workspaces
@@ -58,6 +58,7 @@ NOTEBOOK_KNOWN_LAKEHOUSES_KEY = "known_lakehouses"
 JSON_SENSITIVE_FIELDS = {
     "workspaceId",
     "artifactId",
+    "itemId",
     "lakehouseId",
     "connectionId",
 }
@@ -65,7 +66,6 @@ JSON_SENSITIVE_FIELDS = {
 # Files that never require parameterisation - skip entirely
 SKIP_FILENAMES = {
     "alm.settings.json",
-    "shortcuts.metadata.json",
     "stage_config.json",
 }
 

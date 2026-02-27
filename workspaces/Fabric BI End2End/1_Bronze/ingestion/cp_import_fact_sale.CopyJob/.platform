@@ -1,11 +1,11 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
   "metadata": {
-    "type": "Notebook",
-    "displayName": "nb_gd_modeling"
+    "type": "CopyJob",
+    "displayName": "cp_import_fact_sale"
   },
   "config": {
     "version": "2.0",
-    "logicalId": "c36b90e4-741e-b90b-48fc-b742e472917a"
+    "logicalId": "f1ea7e9c-0a4c-9873-49e2-41f6d65674ac"
   }
 }

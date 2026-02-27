@@ -5,19 +5,19 @@
       "type": "Parquet",
       "connectionSettings": {
         "type": "AzureBlobStorage",
-        "typeProperties": {
-          "containerUri": "https://azureopendatastorage.blob.core.windows.net/mlsamples"
+        "externalReferences": {
+          "connection": "fd11edcd-7599-4e8b-8a68-20403d377a76"
         }
       }
     },
     "destination": {
-      "type": "Parquet",
+      "type": "LakehouseTable",
       "connectionSettings": {
         "type": "Lakehouse",
         "typeProperties": {
           "workspaceId": "00000000-0000-0000-0000-000000000000",
           "artifactId": "b892bcb4-b1d3-a9e0-4a9e-fac33bb0b654",
-          "rootFolder": "Files"
+          "rootFolder": "Tables"
         }
       }
     },
@@ -27,36 +27,29 @@
   },
   "activities": [
     {
-      "id": "57ff789e-b4d0-4aa0-99eb-464a0d483961",
+      "id": "a94c1d61-27ae-4e44-bcce-3a3323adb2e7",
       "properties": {
         "source": {
           "datasetSettings": {
             "location": {
               "type": "AzureBlobStorageLocation",
-              "folderPath": "diabetes",
-              "container": "mlsamples"
+              "fileName": "dbo.dimension_city.parquet",
+              "container": "star-schema"
             },
             "compressionCodec": "snappy"
           },
           "storeSettings": {
-            "recursive": false,
-            "wildcardFileName": "*.parquet"
+            "recursive": true,
+            "enablePartitionDiscovery": false
           }
         },
         "destination": {
+          "writeBehavior": "Append",
           "datasetSettings": {
-            "location": {
-              "type": "LakehouseLocation",
-              "fileName": "diabetes.parquet"
-            },
-            "compressionCodec": "snappy"
+            "schema": "dbo",
+            "table": "dimension_city"
           },
-          "storeSettings": {
-            "copyBehavior": "MergeFiles"
-          },
-          "formatSettings": {
-            "enableVertiParquet": false
-          }
+          "applyVOrder": false
         },
         "enableStaging": false,
         "translator": {

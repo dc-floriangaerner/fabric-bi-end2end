@@ -50,14 +50,21 @@ Implemented modeling standards:
 ## 3. Model Diagram
 
 ```mermaid
-erDiagram
-    fact_sale }o--|| dimension_city : "CityKey -> CityKey (active)"
-    fact_sale }o--|| dimension_customer : "CustomerKey -> CustomerKey (active)"
-    fact_sale }o--|| dimension_customer : "BillToCustomerKey -> CustomerKey (inactive)"
-    fact_sale }o--|| dimension_stock_item : "StockItemKey -> StockItemKey (active)"
-    fact_sale }o--|| dimension_employee : "SalespersonKey -> EmployeeKey (active)"
-    fact_sale }o--|| dimension_date : "InvoiceDateKey -> Date (active)"
-    fact_sale }o--|| dimension_date : "DeliveryDateKey -> Date (inactive)"
+flowchart LR
+    fact_sale[fact_sale]
+    dimension_city[dimension_city]
+    dimension_customer[dimension_customer]
+    dimension_stock_item[dimension_stock_item]
+    dimension_employee[dimension_employee]
+    dimension_date[dimension_date]
+
+    fact_sale -->|CityKey to CityKey active| dimension_city
+    fact_sale -->|CustomerKey to CustomerKey active| dimension_customer
+    fact_sale -.->|BillToCustomerKey to CustomerKey inactive| dimension_customer
+    fact_sale -->|StockItemKey to StockItemKey active| dimension_stock_item
+    fact_sale -->|SalespersonKey to EmployeeKey active| dimension_employee
+    fact_sale -->|InvoiceDateKey to Date active| dimension_date
+    fact_sale -.->|DeliveryDateKey to Date inactive| dimension_date
 ```
 
 ## 4. Relationship Catalog

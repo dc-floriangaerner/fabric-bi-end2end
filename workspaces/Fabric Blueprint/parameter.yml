@@ -1,0 +1,8 @@
+# Parameter Configuration for Fabric CI/CD
+# This file defines find/replace patterns for transforming workspace item IDs
+# across different environments (dev, test, prod).
+# Rules are split into template files by item type for maintainability.
+
+extend:
+    - "./parameter_templates/nb_parameters.yml"
+    - "./parameter_templates/cp_parameters.yml"

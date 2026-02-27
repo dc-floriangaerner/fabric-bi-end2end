@@ -1,0 +1,98 @@
+name: Terraform — Fabric Infrastructure
+
+# ──────────────────────────────────────────────
+# Triggers
+# ──────────────────────────────────────────────
+# 1. Reusable workflow call (from other workflows) → plan + apply
+# 2. Push to main touching terraform/** → plan + apply for dev
+# 3. Manual dispatch → plan + apply for selected environment
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        type: string
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options:
+          - dev
+          - test
+          - prod
+
+# Prevent parallel runs that could corrupt Terraform state
+concurrency:
+  group: terraform-${{ github.event_name == 'push' && 'dev' || inputs.environment }}
+  cancel-in-progress: false
+
+env:
+  TF_VERSION: '1.9.0'
+  TF_WORKING_DIR: './terraform'
+  TARGET_ENV: ${{ github.event_name == 'push' && 'dev' || inputs.environment }}
+  TF_STATE_KEY: ${{ github.repository }}/${{ github.event_name == 'push' && 'dev' || inputs.environment }}.tfstate
+
+jobs:
+  terraform:
+    name: Terraform ${{ github.event_name == 'push' && 'Dev' || inputs.environment == 'dev' && 'Dev' || inputs.environment == 'test' && 'Test' || 'Production' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: ${{ github.event_name == 'push' && 'dev' || inputs.environment }}
+      url: https://app.fabric.microsoft.com
+
+    env:
+      # microsoft/fabric provider reads these automatically
+      FABRIC_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      FABRIC_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      FABRIC_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      # azurerm backend reads these for state storage access
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Terraform Init
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform init \
+            -input=false \
+            -backend-config="key=${{ env.TF_STATE_KEY }}"
+
+      - name: Terraform Validate
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform plan \
+            -input=false \
+            -var-file="environments/${{ env.TARGET_ENV }}.tfvars" \
+            -out=tfplan \
+            -no-color
+
+      - name: Terraform Apply
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform apply \
+            -input=false \
+            -auto-approve \
+            tfplan

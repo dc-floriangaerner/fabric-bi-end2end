@@ -1,0 +1,112 @@
+name: Deploy to Microsoft Fabric
+
+# Workflow triggers:
+# 1. Automatic: Push to main branch with changes in workspaces/** paths
+#    - Deploys all workspaces to Dev environment
+#    - Changes outside workspaces/ directory do NOT trigger deployment
+# 2. Manual: workflow_dispatch with environment selection (dev/test/prod)
+#    - Deploys all workspaces to selected environment
+#    - Useful for promoting to Test/Prod or re-deploying Dev
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'workspaces/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options:
+          - dev
+          - test
+          - prod
+
+env:
+  PYTHON_VERSION: '3.12'
+  WORKSPACES_DIRECTORY: 'workspaces'
+  TARGET_ENV: ${{ github.event_name == 'push' && 'dev' || inputs.environment }}
+  TRIGGER_TYPE: ${{ github.event_name == 'push' && 'Automatic' || 'Manual' }}
+
+# Prevent parallel deployments to avoid conflicts
+concurrency:
+  group: fabric-deploy-${{ github.event_name == 'push' && 'dev' || inputs.environment }}
+  cancel-in-progress: false
+
+jobs:
+  terraform:
+    name: Run Terraform prerequisites
+    uses: ./.github/workflows/terraform.yml
+    with:
+      environment: ${{ github.event_name == 'push' && 'dev' || inputs.environment }}
+    secrets: inherit
+
+  # Deploy job - dynamically deploys to the triggered environment only
+  # Triggers:
+  #   - Dev: Automatic on push to main, or manual via workflow_dispatch
+  #   - Test/Prod: Manual only via workflow_dispatch
+  # Note: Test and Prod require manual approval if environment protection rules are configured
+  # Note: Workspace discovery happens automatically in the Python deployment script
+  deploy:
+    name: Deploy to ${{ github.event_name == 'push' && 'Dev' || inputs.environment == 'dev' && 'Dev' || inputs.environment == 'test' && 'Test' || 'Production' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [terraform]
+    environment:
+      name: ${{ github.event_name == 'push' && 'dev' || inputs.environment }}
+      url: https://app.fabric.microsoft.com
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Scan for unmapped IDs
+        # Pre-deployment gate: ensure all GUIDs in workspace items are covered
+        # by a find_replace rule. Prevents dev-only IDs reaching Test/Production.
+        run: |
+          echo "::group::Unmapped ID Scan"
+          python -m scripts.check_unmapped_ids \
+            --workspaces_directory "${{ env.WORKSPACES_DIRECTORY }}"
+          echo "::endgroup::"
+        env:
+          GITHUB_ACTIONS: 'true'
+
+      - name: Deploy to Fabric
+        run: |
+          python -u -m scripts.deploy_to_fabric \
+            --workspaces_directory "${{ env.WORKSPACES_DIRECTORY }}" \
+            --environment "${{ env.TARGET_ENV }}"
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+      - name: Deployment Summary
+        if: always()
+        run: |
+          # Generate deployment summary using reusable script
+          bash scripts/generate_deployment_summary.sh "${{ env.TARGET_ENV }}" "${{ env.TRIGGER_TYPE }}"
+        env:
+          JOB_STATUS: ${{ job.status }}
+
+      - name: Upload deployment results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-results-${{ env.TARGET_ENV }}-${{ github.run_number }}
+          path: deployment-results.json
+          if-no-files-found: warn
+          retention-days: 30

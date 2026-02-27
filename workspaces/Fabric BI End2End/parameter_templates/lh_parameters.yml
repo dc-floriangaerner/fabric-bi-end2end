@@ -7,7 +7,7 @@
 #       replace_value:
 #           _ALL_: "$workspace.id"
 #       item_type: "Lakehouse"
-
+      
 #     # Replace hardcoded source lakehouse ID (bronze) in OneLake shortcut targets
 #     - find_value: "b892bcb4-b1d3-a9e0-4a9e-fac33bb0b654"
 #       replace_value:

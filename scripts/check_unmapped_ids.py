@@ -71,6 +71,7 @@ SKIP_FILENAMES = {
 
 # Suffixes that are metadata, not deployable content
 SKIP_SUFFIXES = {".metadata.json"}
+INCLUDED_METADATA_FILENAMES = {"shortcuts.metadata.json"}
 
 
 # ---------------------------------------------------------------------------
@@ -379,7 +380,10 @@ def scan_workspace(workspace_folder: str, workspaces_dir: Path, repo_root: Path)
             continue
         if file_path.name in SKIP_FILENAMES:
             continue
-        if any(file_path.name.endswith(s) for s in SKIP_SUFFIXES):
+        if (
+            any(file_path.name.endswith(s) for s in SKIP_SUFFIXES)
+            and file_path.name not in INCLUDED_METADATA_FILENAMES
+        ):
             continue
 
         item_type = item_type_from_path(file_path)

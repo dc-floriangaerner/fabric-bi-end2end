@@ -2,9 +2,11 @@ table dimension_date
 	lineageTag: 81fa06d6-39a6-4c85-979d-b747bd5d5bb3
 	sourceLineageTag: [dbo].[dimension_date]
 
+	/// Calendar date at day grain.
 	column Date
 		dataType: dateTime
 		formatString: General Date
+		displayFolder: Calendar
 		lineageTag: 44d4c0d8-d5de-4caa-9f2f-5b8d7227d22a
 		sourceLineageTag: Date
 		summarizeBy: none
@@ -12,128 +14,190 @@ table dimension_date
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Numeric day-of-month used for sorting day labels.
 	column DayNumber
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Sort Keys
 		lineageTag: bf1ab2db-e8ae-4f48-a282-93732d7b13cf
 		sourceLineageTag: DayNumber
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: DayNumber
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Day label within a month.
 	column Day
 		dataType: string
+		displayFolder: Calendar
 		lineageTag: 836bbdaf-4205-41a7-ab87-6b970371863f
 		sourceLineageTag: Day
 		summarizeBy: none
 		sourceColumn: Day
+		sortByColumn: DayNumber
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Month name.
 	column Month
 		dataType: string
+		displayFolder: Calendar
 		lineageTag: 4e2ea49b-7fff-440f-882a-1382f4ee3205
 		sourceLineageTag: Month
 		summarizeBy: none
 		sourceColumn: Month
+		sortByColumn: CalendarMonthNumber
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Abbreviated month name.
 	column ShortMonth
 		dataType: string
+		displayFolder: Calendar
 		lineageTag: 58ad402e-77f4-4014-a3e7-02f46e8b3e30
 		sourceLineageTag: ShortMonth
 		summarizeBy: none
 		sourceColumn: ShortMonth
+		sortByColumn: CalendarMonthNumber
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Month number in the calendar year.
 	column CalendarMonthNumber
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Sort Keys
 		lineageTag: 7622b07e-e292-44b4-be0b-0624cd6aced3
 		sourceLineageTag: CalendarMonthNumber
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: CalendarMonthNumber
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Calendar month label used for reporting.
 	column CalendarMonthLabel
 		dataType: string
+		displayFolder: Calendar
 		lineageTag: 496f5bee-8a12-412e-95e5-42a58b281341
 		sourceLineageTag: CalendarMonthLabel
 		summarizeBy: none
 		sourceColumn: CalendarMonthLabel
+		sortByColumn: CalendarMonthNumber
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Calendar year number used for sorting and grouping.
 	column CalendarYear
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Sort Keys
 		lineageTag: 5d13a35f-109f-4242-9b97-ee03cc2449ef
 		sourceLineageTag: CalendarYear
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: CalendarYear
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Calendar year label.
 	column CalendarYearLabel
 		dataType: string
+		displayFolder: Calendar
 		lineageTag: 5f403ae0-3e6c-4e32-8a35-7d5b35b8b957
 		sourceLineageTag: CalendarYearLabel
 		summarizeBy: none
 		sourceColumn: CalendarYearLabel
+		sortByColumn: CalendarYear
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Month number in the fiscal year.
 	column FiscalMonthNumber
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Sort Keys
 		lineageTag: d9ef541f-0706-4ff4-8008-4276bacc4efc
 		sourceLineageTag: FiscalMonthNumber
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: FiscalMonthNumber
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Fiscal month label used for reporting.
 	column FiscalMonthLabel
 		dataType: string
+		displayFolder: Fiscal
 		lineageTag: 5ea48164-9454-4acf-ad59-cd08ed98c13e
 		sourceLineageTag: FiscalMonthLabel
 		summarizeBy: none
 		sourceColumn: FiscalMonthLabel
+		sortByColumn: FiscalMonthNumber
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Fiscal year number used for sorting and grouping.
 	column FiscalYear
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Sort Keys
 		lineageTag: 14df946f-0cb0-48b5-b226-167404725478
 		sourceLineageTag: FiscalYear
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: FiscalYear
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Fiscal year label.
 	column FiscalYearLabel
 		dataType: string
+		displayFolder: Fiscal
 		lineageTag: 5888f2a2-18de-4566-aeed-870d17c425f9
 		sourceLineageTag: FiscalYearLabel
 		summarizeBy: none
 		sourceColumn: FiscalYearLabel
+		sortByColumn: FiscalYear
 
 		annotation SummarizationSetBy = Automatic
 
+	/// ISO week number of the year.
 	column ISOWeekNumber
 		dataType: int64
 		formatString: 0
+		displayFolder: Calendar
 		lineageTag: 6a17d97c-2b20-4e6e-9d3b-09981905fa8c
 		sourceLineageTag: ISOWeekNumber
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: ISOWeekNumber
 
 		annotation SummarizationSetBy = Automatic
+
+	/// Calendar hierarchy for year, month, and date analysis.
+	hierarchy 'Calendar Hierarchy'
+
+		level Year
+			column: CalendarYearLabel
+
+		level Month
+			column: CalendarMonthLabel
+
+		level Date
+			column: Date
+
+	/// Fiscal hierarchy for fiscal year, fiscal month, and date analysis.
+	hierarchy 'Fiscal Hierarchy'
+
+		level 'Fiscal Year'
+			column: FiscalYearLabel
+
+		level 'Fiscal Month'
+			column: FiscalMonthLabel
+
+		level Date
+			column: Date
 
 	partition dimension_date = entity
 		mode: directLake

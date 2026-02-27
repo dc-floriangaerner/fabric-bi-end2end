@@ -18,4 +18,5 @@ ref table dimension_customer
 ref table dimension_stock_item
 ref table fact_sale
 ref table dimension_date
+ref table _Measures
 

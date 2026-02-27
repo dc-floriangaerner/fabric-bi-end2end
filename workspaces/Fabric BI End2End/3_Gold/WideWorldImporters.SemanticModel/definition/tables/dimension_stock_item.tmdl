@@ -2,28 +2,36 @@ table dimension_stock_item
 	lineageTag: 6262720a-7c35-4bbe-8e64-59d9413e7e7c
 	sourceLineageTag: [dbo].[dimension_stock_item]
 
+	/// Surrogate key for the stock item dimension.
 	column StockItemKey
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Keys
 		lineageTag: dea57331-a761-43d0-9e17-7f29200a0728
 		sourceLineageTag: StockItemKey
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: StockItemKey
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Source system stock item identifier from Wide World Importers.
 	column WWIStockItemID
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Keys
 		lineageTag: 94a9fcf1-d4f6-4a8e-96cd-6693226dce08
 		sourceLineageTag: WWIStockItemID
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: WWIStockItemID
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Stock item name.
 	column StockItem
 		dataType: string
+		displayFolder: Product
 		lineageTag: 7a827bd0-970c-4971-9250-e95f84af0e1e
 		sourceLineageTag: StockItem
 		summarizeBy: none
@@ -31,8 +39,10 @@ table dimension_stock_item
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Stock item color.
 	column Color
 		dataType: string
+		displayFolder: Product
 		lineageTag: b691538d-673a-492a-9034-c1a5dac56caa
 		sourceLineageTag: Color
 		summarizeBy: none
@@ -40,8 +50,10 @@ table dimension_stock_item
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Selling package description.
 	column SellingPackage
 		dataType: string
+		displayFolder: Packaging
 		lineageTag: 936b3511-c4d6-4e20-904f-702cb779286b
 		sourceLineageTag: SellingPackage
 		summarizeBy: none
@@ -49,8 +61,10 @@ table dimension_stock_item
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Buying package description.
 	column BuyingPackage
 		dataType: string
+		displayFolder: Packaging
 		lineageTag: eb565ee6-ca9c-464e-b286-65ebba38380c
 		sourceLineageTag: BuyingPackage
 		summarizeBy: none
@@ -58,8 +72,10 @@ table dimension_stock_item
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Brand name.
 	column Brand
 		dataType: string
+		displayFolder: Product
 		lineageTag: 0044508c-8673-4c09-b263-5fb3455bcdbf
 		sourceLineageTag: Brand
 		summarizeBy: none
@@ -67,8 +83,10 @@ table dimension_stock_item
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Size description.
 	column Size
 		dataType: string
+		displayFolder: Product
 		lineageTag: 9825279f-e974-477f-b769-f20d734a26f1
 		sourceLineageTag: Size
 		summarizeBy: none
@@ -76,29 +94,35 @@ table dimension_stock_item
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Lead time in days.
 	column LeadTimeDays
 		dataType: int64
 		formatString: 0
+		displayFolder: Supply
 		lineageTag: ff06ea40-142c-4035-9c47-164a06dd0cea
 		sourceLineageTag: LeadTimeDays
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: LeadTimeDays
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Units contained per outer package.
 	column QuantityPerOuter
 		dataType: int64
 		formatString: 0
+		displayFolder: Supply
 		lineageTag: fa154dc8-f93a-4b97-84f2-dd99b9084291
 		sourceLineageTag: QuantityPerOuter
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: QuantityPerOuter
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Flag indicating if the item is chiller stock.
 	column IsChillerStock
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
+		displayFolder: Product
 		lineageTag: 72e501ee-2f6f-44a5-86c7-3b3fb11363ea
 		sourceLineageTag: IsChillerStock
 		summarizeBy: none
@@ -106,8 +130,10 @@ table dimension_stock_item
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Item barcode.
 	column Barcode
 		dataType: string
+		displayFolder: Product
 		lineageTag: d0b38e14-c5d4-446c-a9bd-a2a98c307052
 		sourceLineageTag: Barcode
 		summarizeBy: none
@@ -115,53 +141,64 @@ table dimension_stock_item
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Tax rate for the stock item.
 	column TaxRate
 		dataType: double
+		displayFolder: Pricing
 		lineageTag: ea7b5ec7-cbe7-4956-b388-b4055c5c3f9d
 		sourceLineageTag: TaxRate
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: TaxRate
 
 		annotation SummarizationSetBy = Automatic
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Standard unit price for the stock item.
 	column UnitPrice
 		dataType: double
+		displayFolder: Pricing
 		lineageTag: e9ac3290-fda6-40ab-ae8e-b347e99510b0
 		sourceLineageTag: UnitPrice
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: UnitPrice
 
 		annotation SummarizationSetBy = Automatic
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Recommended retail price.
 	column RecommendedRetailPrice
 		dataType: double
+		displayFolder: Pricing
 		lineageTag: ddbf1a0b-7ff4-4fc6-8aae-cfd8fabb6ed6
 		sourceLineageTag: RecommendedRetailPrice
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: RecommendedRetailPrice
 
 		annotation SummarizationSetBy = Automatic
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Typical weight per unit.
 	column TypicalWeightPerUnit
 		dataType: double
+		displayFolder: Supply
 		lineageTag: 6834564c-c62f-401e-9aac-1aedafc69ab5
 		sourceLineageTag: TypicalWeightPerUnit
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: TypicalWeightPerUnit
 
 		annotation SummarizationSetBy = Automatic
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Start timestamp of row validity in source history.
 	column ValidFrom
 		dataType: dateTime
+		isHidden
 		formatString: General Date
+		displayFolder: Audit
 		lineageTag: 64f6aaae-61f9-459c-b2c4-9162480f00fc
 		sourceLineageTag: ValidFrom
 		summarizeBy: none
@@ -169,9 +206,12 @@ table dimension_stock_item
 
 		annotation SummarizationSetBy = Automatic
 
+	/// End timestamp of row validity in source history.
 	column ValidTo
 		dataType: dateTime
+		isHidden
 		formatString: General Date
+		displayFolder: Audit
 		lineageTag: 2d9c99b6-2c61-4f4f-b907-1d65ee27e4b7
 		sourceLineageTag: ValidTo
 		summarizeBy: none
@@ -179,12 +219,15 @@ table dimension_stock_item
 
 		annotation SummarizationSetBy = Automatic
 
+	/// ETL lineage identifier for the stock item row.
 	column LineageKey
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Audit
 		lineageTag: 7b86b991-e345-4289-b0d0-0d1405d205ad
 		sourceLineageTag: LineageKey
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: LineageKey
 
 		annotation SummarizationSetBy = Automatic

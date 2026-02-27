@@ -2,28 +2,36 @@ table dimension_city
 	lineageTag: 1a04c9d1-0a90-477a-8ab1-9f8d4c550534
 	sourceLineageTag: [dbo].[dimension_city]
 
+	/// Surrogate key for the city dimension.
 	column CityKey
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Keys
 		lineageTag: 16317e2e-3aa9-4d44-bbcf-6e24c1d1093e
 		sourceLineageTag: CityKey
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: CityKey
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Source system city identifier from Wide World Importers.
 	column WWICityID
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Keys
 		lineageTag: 76144291-fb0e-430c-9c0b-ca0aa418a3e5
 		sourceLineageTag: WWICityID
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: WWICityID
 
 		annotation SummarizationSetBy = Automatic
 
+	/// City name.
 	column City
 		dataType: string
+		displayFolder: Geography
 		lineageTag: 49a23c3c-06bc-40c0-9748-86de65575bd4
 		sourceLineageTag: City
 		summarizeBy: none
@@ -31,8 +39,10 @@ table dimension_city
 
 		annotation SummarizationSetBy = Automatic
 
+	/// State or province name.
 	column StateProvince
 		dataType: string
+		displayFolder: Geography
 		lineageTag: 9baac364-f446-4f65-abb0-672a0de976a1
 		sourceLineageTag: StateProvince
 		summarizeBy: none
@@ -40,8 +50,10 @@ table dimension_city
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Country name.
 	column Country
 		dataType: string
+		displayFolder: Geography
 		lineageTag: 621508b4-feda-4cc4-a473-52efb86e7cda
 		sourceLineageTag: Country
 		summarizeBy: none
@@ -49,8 +61,10 @@ table dimension_city
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Continent name.
 	column Continent
 		dataType: string
+		displayFolder: Geography
 		lineageTag: bb71f89d-aa9f-4fc8-9e88-b5c7843ca82f
 		sourceLineageTag: Continent
 		summarizeBy: none
@@ -58,8 +72,10 @@ table dimension_city
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Sales territory assigned to the city.
 	column SalesTerritory
 		dataType: string
+		displayFolder: Geography
 		lineageTag: c872e896-6074-48ee-8f04-855428d94597
 		sourceLineageTag: SalesTerritory
 		summarizeBy: none
@@ -67,8 +83,10 @@ table dimension_city
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Region name.
 	column Region
 		dataType: string
+		displayFolder: Geography
 		lineageTag: cee82294-badc-4cb8-a578-7dd4092afdbf
 		sourceLineageTag: Region
 		summarizeBy: none
@@ -76,8 +94,10 @@ table dimension_city
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Subregion name.
 	column Subregion
 		dataType: string
+		displayFolder: Geography
 		lineageTag: d67660b0-ff1a-4382-908d-12736526bdcf
 		sourceLineageTag: Subregion
 		summarizeBy: none
@@ -85,8 +105,10 @@ table dimension_city
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Combined location label.
 	column Location
 		dataType: string
+		displayFolder: Geography
 		lineageTag: 7191c622-938a-49b4-87ee-1f9fbf15cc30
 		sourceLineageTag: Location
 		summarizeBy: none
@@ -94,19 +116,24 @@ table dimension_city
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Most recently recorded population for the city.
 	column LatestRecordedPopulation
 		dataType: int64
 		formatString: 0
+		displayFolder: Metrics
 		lineageTag: 685b123a-a5d4-4df5-98aa-f9389ee8e992
 		sourceLineageTag: LatestRecordedPopulation
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: LatestRecordedPopulation
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Start timestamp of row validity in source history.
 	column ValidFrom
 		dataType: dateTime
+		isHidden
 		formatString: General Date
+		displayFolder: Audit
 		lineageTag: 5bb50e3e-8b19-4bea-93f6-8c4a0ce50b73
 		sourceLineageTag: ValidFrom
 		summarizeBy: none
@@ -114,9 +141,12 @@ table dimension_city
 
 		annotation SummarizationSetBy = Automatic
 
+	/// End timestamp of row validity in source history.
 	column ValidTo
 		dataType: dateTime
+		isHidden
 		formatString: General Date
+		displayFolder: Audit
 		lineageTag: b4d98fb3-8741-45b6-a1e6-8e88fe765aa1
 		sourceLineageTag: ValidTo
 		summarizeBy: none
@@ -124,15 +154,30 @@ table dimension_city
 
 		annotation SummarizationSetBy = Automatic
 
+	/// ETL lineage identifier for the city row.
 	column LineageKey
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Audit
 		lineageTag: e4327cac-53c4-4674-9b34-7cc01aad2a89
 		sourceLineageTag: LineageKey
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: LineageKey
 
 		annotation SummarizationSetBy = Automatic
+
+	/// Geographic hierarchy from country to city.
+	hierarchy 'Geography Hierarchy'
+
+		level Country
+			column: Country
+
+		level 'State Province'
+			column: StateProvince
+
+		level City
+			column: City
 
 	partition dimension_city = entity
 		mode: directLake

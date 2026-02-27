@@ -2,28 +2,36 @@ table dimension_employee
 	lineageTag: 64ef3b09-f20e-4ad4-b1f5-e80eb041dcf1
 	sourceLineageTag: [dbo].[dimension_employee]
 
+	/// Surrogate key for the employee dimension.
 	column EmployeeKey
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Keys
 		lineageTag: 94c6c7c4-25e2-425f-b359-1bd0b73ac5b4
 		sourceLineageTag: EmployeeKey
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: EmployeeKey
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Source system employee identifier from Wide World Importers.
 	column WWIEmployeeID
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Keys
 		lineageTag: 2c48634e-a16a-4b95-8f74-61e791916a84
 		sourceLineageTag: WWIEmployeeID
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: WWIEmployeeID
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Employee full name.
 	column Employee
 		dataType: string
+		displayFolder: Employee
 		lineageTag: e6a62955-10e6-43db-b510-78773250fe67
 		sourceLineageTag: Employee
 		summarizeBy: none
@@ -31,8 +39,10 @@ table dimension_employee
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Employee preferred name.
 	column PreferredName
 		dataType: string
+		displayFolder: Employee
 		lineageTag: 163bc87b-bb81-488b-b190-93bb80f8a4f9
 		sourceLineageTag: PreferredName
 		summarizeBy: none
@@ -40,9 +50,11 @@ table dimension_employee
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Flag indicating whether the employee is a salesperson.
 	column IsSalesperson
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
+		displayFolder: Employee
 		lineageTag: f44ad823-9708-4f91-8733-df19fc643a76
 		sourceLineageTag: IsSalesperson
 		summarizeBy: none
@@ -50,9 +62,12 @@ table dimension_employee
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Start timestamp of row validity in source history.
 	column ValidFrom
 		dataType: dateTime
+		isHidden
 		formatString: General Date
+		displayFolder: Audit
 		lineageTag: ceda996c-643c-4b08-b2ce-e812f7cbb32f
 		sourceLineageTag: ValidFrom
 		summarizeBy: none
@@ -60,9 +75,12 @@ table dimension_employee
 
 		annotation SummarizationSetBy = Automatic
 
+	/// End timestamp of row validity in source history.
 	column ValidTo
 		dataType: dateTime
+		isHidden
 		formatString: General Date
+		displayFolder: Audit
 		lineageTag: 0c18561d-6afb-4a1b-8bd9-b6ba4eea4026
 		sourceLineageTag: ValidTo
 		summarizeBy: none
@@ -70,12 +88,15 @@ table dimension_employee
 
 		annotation SummarizationSetBy = Automatic
 
+	/// ETL lineage identifier for the employee row.
 	column LineageKey
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Audit
 		lineageTag: 0a8e8079-8d37-4317-81cd-2a0745a9196e
 		sourceLineageTag: LineageKey
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: LineageKey
 
 		annotation SummarizationSetBy = Automatic

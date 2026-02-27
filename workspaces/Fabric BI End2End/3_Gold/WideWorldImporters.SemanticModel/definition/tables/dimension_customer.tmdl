@@ -2,28 +2,36 @@ table dimension_customer
 	lineageTag: a87284a9-805b-4e68-b7b5-765524d75da0
 	sourceLineageTag: [dbo].[dimension_customer]
 
+	/// Surrogate key for the customer dimension.
 	column CustomerKey
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Keys
 		lineageTag: 8986b91c-bbe1-4dfa-aacd-b079dcc0afd1
 		sourceLineageTag: CustomerKey
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: CustomerKey
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Source system customer identifier from Wide World Importers.
 	column WWICustomerID
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Keys
 		lineageTag: 8df1bdc7-2ba9-427c-8568-bae5148e5b71
 		sourceLineageTag: WWICustomerID
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: WWICustomerID
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Customer display name.
 	column Customer
 		dataType: string
+		displayFolder: Customer
 		lineageTag: 88c838ae-115c-44be-bc25-2161d55e4625
 		sourceLineageTag: Customer
 		summarizeBy: none
@@ -31,8 +39,10 @@ table dimension_customer
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Bill-to customer name associated with the customer.
 	column BillToCustomer
 		dataType: string
+		displayFolder: Customer
 		lineageTag: e240dbcc-27ac-4f7d-b5fe-bfe30498a1f5
 		sourceLineageTag: BillToCustomer
 		summarizeBy: none
@@ -40,8 +50,10 @@ table dimension_customer
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Customer category.
 	column Category
 		dataType: string
+		displayFolder: Segmentation
 		lineageTag: cde75629-883c-4682-a51e-77ba8daf3901
 		sourceLineageTag: Category
 		summarizeBy: none
@@ -49,8 +61,10 @@ table dimension_customer
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Buying group name for the customer.
 	column BuyingGroup
 		dataType: string
+		displayFolder: Segmentation
 		lineageTag: db326f68-3be1-4b93-89ca-59b193d29680
 		sourceLineageTag: BuyingGroup
 		summarizeBy: none
@@ -58,8 +72,10 @@ table dimension_customer
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Primary customer contact name.
 	column PrimaryContact
 		dataType: string
+		displayFolder: Customer
 		lineageTag: aaba0f05-8634-49fb-add2-54a5269413fc
 		sourceLineageTag: PrimaryContact
 		summarizeBy: none
@@ -67,8 +83,10 @@ table dimension_customer
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Customer postal code.
 	column PostalCode
 		dataType: string
+		displayFolder: Customer
 		lineageTag: b3bad9ad-7bc3-4e77-a4ba-09770c2a70a9
 		sourceLineageTag: PostalCode
 		summarizeBy: none
@@ -76,9 +94,12 @@ table dimension_customer
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Start timestamp of row validity in source history.
 	column ValidFrom
 		dataType: dateTime
+		isHidden
 		formatString: General Date
+		displayFolder: Audit
 		lineageTag: 42ccd03e-c5b6-4123-b6b7-9d525aa366c0
 		sourceLineageTag: ValidFrom
 		summarizeBy: none
@@ -86,9 +107,12 @@ table dimension_customer
 
 		annotation SummarizationSetBy = Automatic
 
+	/// End timestamp of row validity in source history.
 	column ValidTo
 		dataType: dateTime
+		isHidden
 		formatString: General Date
+		displayFolder: Audit
 		lineageTag: 3552defe-f2d5-4a3e-ab8f-bc0a6c33480d
 		sourceLineageTag: ValidTo
 		summarizeBy: none
@@ -96,12 +120,15 @@ table dimension_customer
 
 		annotation SummarizationSetBy = Automatic
 
+	/// ETL lineage identifier for the customer row.
 	column LineageKey
 		dataType: int64
+		isHidden
 		formatString: 0
+		displayFolder: Audit
 		lineageTag: 717eac35-3256-456a-adb9-1e9c4088080c
 		sourceLineageTag: LineageKey
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: LineageKey
 
 		annotation SummarizationSetBy = Automatic

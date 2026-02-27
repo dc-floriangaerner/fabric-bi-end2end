@@ -1,0 +1,57 @@
+/// Container table for explicit measures.
+table _Measures
+
+	/// Total sales amount including tax.
+	measure 'Total Sales' = SUM(fact_sale[TotalIncludingTax])
+		formatString: $#,0.00;($#,0.00);$#,0.00
+		displayFolder: Sales
+
+	/// Total sales amount excluding tax.
+	measure 'Total Sales Excl Tax' = SUM(fact_sale[TotalExcludingTax])
+		formatString: $#,0.00;($#,0.00);$#,0.00
+		displayFolder: Sales
+
+	/// Total tax amount across all sales lines.
+	measure 'Total Tax' = SUM(fact_sale[TaxAmount])
+		formatString: $#,0.00;($#,0.00);$#,0.00
+		displayFolder: Sales
+
+	/// Total gross profit across all sales lines.
+	measure 'Total Profit' = SUM(fact_sale[Profit])
+		formatString: $#,0.00;($#,0.00);$#,0.00
+		displayFolder: Sales
+
+	/// Total quantity sold across all sales lines.
+	measure 'Total Quantity' = SUM(fact_sale[Quantity])
+		formatString: #,0
+		displayFolder: Sales
+
+	/// Number of sales fact rows.
+	measure 'Sales Lines' = COUNTROWS(fact_sale)
+		formatString: #,0
+		displayFolder: Counts
+
+	/// Average unit selling price based on sales excluding tax and quantity.
+	measure 'Avg Unit Price' = DIVIDE([Total Sales Excl Tax], [Total Quantity])
+		formatString: $#,0.00;($#,0.00);$#,0.00
+		displayFolder: Sales
+
+	/// Average profit per sales line.
+	measure 'Avg Profit per Line' = DIVIDE([Total Profit], [Sales Lines])
+		formatString: $#,0.00;($#,0.00);$#,0.00
+		displayFolder: Sales
+
+	/// Number of distinct sold-to customers in current filter context.
+	measure 'Distinct Customers' = DISTINCTCOUNT(fact_sale[CustomerKey])
+		formatString: #,0
+		displayFolder: Customers
+
+	/// Number of distinct stock items sold in current filter context.
+	measure 'Distinct Stock Items' = DISTINCTCOUNT(fact_sale[StockItemKey])
+		formatString: #,0
+		displayFolder: Products
+
+	partition _Measures = calculated
+		mode: import
+		source = ROW("Measure", 1)
+

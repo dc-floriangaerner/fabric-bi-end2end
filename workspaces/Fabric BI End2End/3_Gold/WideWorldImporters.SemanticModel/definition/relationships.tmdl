@@ -1,0 +1,32 @@
+relationship rel_fact_sale_city
+	fromColumn: fact_sale.CityKey
+	toColumn: dimension_city.CityKey
+
+relationship rel_fact_sale_customer
+	fromColumn: fact_sale.CustomerKey
+	toColumn: dimension_customer.CustomerKey
+
+relationship rel_fact_sale_billto_customer
+	isActive: false
+	fromColumn: fact_sale.BillToCustomerKey
+	toColumn: dimension_customer.CustomerKey
+
+relationship rel_fact_sale_stock_item
+	fromColumn: fact_sale.StockItemKey
+	toColumn: dimension_stock_item.StockItemKey
+
+relationship rel_fact_sale_salesperson
+	fromColumn: fact_sale.SalespersonKey
+	toColumn: dimension_employee.EmployeeKey
+
+relationship rel_fact_sale_invoice_date
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_sale.InvoiceDateKey
+	toColumn: dimension_date.Date
+
+relationship rel_fact_sale_delivery_date
+	isActive: false
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_sale.DeliveryDateKey
+	toColumn: dimension_date.Date
+

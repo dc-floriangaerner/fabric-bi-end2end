@@ -5,7 +5,7 @@ semantic_model_binding:
     # Default connection for all models not explicitly listed
     default:
         connection_id:
-            dev: https://onelake.dfs.fabric.microsoft.com/53ab62cf-4b66-430a-82b0-9ef7d9704ff2/355aeae8-b78e-45e7-ba9a-313f9c5c781a
+            dev: 355aeae8-b78e-45e7-ba9a-313f9c5c781a
             test: https://onelake.dfs.fabric.microsoft.com/e4f1749a-5c36-4ba5-b97b-170f3dbc7207/46a6462b-41da-4951-b520-712d0fdb8c9f
             # prod:
             # PROD: https://onelake.dfs.fabric.microsoft.com/d4c89580-b3fa-46f1-9ee8-d3ef5b384c91/2e1d42e0-ec3a-471f-8e36-546552c09df5

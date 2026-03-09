@@ -2,8 +2,8 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definitionProperties/2.0.0/schema.json",
   "version": "4.0",
   "datasetReference": {
-    "byConnection": {
-      "connectionString": "Data Source=\"powerbi://api.powerbi.com/v1.0/myorg/Fabric Feature BI\";initial catalog=WideWorldImporters;access mode=readonly;integrated security=ClaimsToken;semanticmodelid=73d58d4a-6ef5-40d8-aa42-e8230ed4b19d"
+    "byPath": {
+      "path": "../../../3_Gold/WideWorldImporters.SemanticModel"
     }
   }
 }
